@@ -14,8 +14,8 @@ class SplashActivity : AppCompatActivity() {
 
         //Abrir a MainActivity após 5 segundos
         Handler(Looper.getMainLooper()).postDelayed({
-            //Iniciar uma intent - Transição de tela Splash para a tela Main
-            val mIntent = Intent(this, MainActivity::class.java)
+            //Iniciar uma intent - Transição de tela Splash para a tela Login
+            val mIntent = Intent(this, LoginActivity::class.java)
             startActivity(mIntent)
             finish()
         }, 5000)
