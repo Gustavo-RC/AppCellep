@@ -1,5 +1,5 @@
 package br.com.gustavo.estacaohack
-
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,14 +20,34 @@ class LoginActivity : AppCompatActivity() {
 
             //Validação dos campos
             if (email.isEmpty()){
-                edtLoginEmail.error = "Campo Obrigatório"
+                edtLoginEmail.error = "Campo obrigatório!"
                 edtLoginEmail.requestFocus()
-            }else if(senha.isEmpty()){
-                edtLoginSenha.error = "Campo Obrigatório"
+            }else if (senha.isEmpty()){
+                edtLoginSenha.error = "Campo obrigatório!"
                 edtLoginSenha.requestFocus()
             }else{
-                //Apresentar uma mensagem de erro ao usuáro
-                Toast.makeText(this, "E-mail ou senha inválidos", Toast.LENGTH_LONG).show()
+                //Acessando o arquivo de preferencias compartilhadas
+                val sharedPrefs = getSharedPreferences("cadastro_$email", Context.MODE_PRIVATE)
+
+                //Recuperando dados no arquivo Shared Preferences
+                val emailPrefs = sharedPrefs.getString("EMAIL", "")
+                val senhaPrefs = sharedPrefs.getString("SENHA", "")
+
+                //Verificando o e-mail e senha que o usuário colocou
+                if(email == emailPrefs && senha == senhaPrefs){
+                    Toast.makeText(this, "Usuário logado com sucesso!", Toast.LENGTH_LONG).show()
+
+                    //Abrindo a MainActivity
+                    val mIntent = Intent(this, MainActivity::class.java)
+
+                    //Passando informações através da Intent
+                    mIntent.putExtra("INTENT_EMAIL", email)
+                    startActivity(mIntent)
+                    finish()
+                }else{
+                    //Apresentando uma mensagem de erro ao usuário
+                    Toast.makeText(this, "Email ou senha inválidos!", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
